@@ -1,0 +1,15 @@
+{
+  "name": "foible",
+  "version": "0.1.0",
+  "description": "Composition and mixins of classes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.6.1",
+    "eslint-plugin-node": "^5.1.1"
+  }
+}

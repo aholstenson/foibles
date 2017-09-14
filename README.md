@@ -16,7 +16,7 @@ const { toExtendable } = require('foibles');
 
 const Extendable = toExtendable(class BaseClass {
 	doStuff() {
-		console.log('base class did stuff);
+		console.log('base class did stuff');
 	}
 });
 ```

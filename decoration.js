@@ -34,9 +34,9 @@ module.exports.apply = function apply(superclass, mixin) {
  * Get if the given object has had the given mixin applied.
  */
 module.exports.has = function has(object, mixin) {
-	const original = original(mixin);
+	const originalMixin = original(mixin);
 	while(object != null) {
-		if(object.hasOwnProperty(application) && object[application] == original) {
+		if(object.hasOwnProperty(application) && object[application] == originalMixin) {
 			return true;
 		}
 

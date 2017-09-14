@@ -1,7 +1,8 @@
 const AsMixin = Symbol('asMixin');
 
 // Require and expose the mixin factory
-const Mixin = module.exports.Mixin = require('./mixins')
+const { Mixin } = require('./mixins')
+module.exports.Mixin = Mixin;
 
 /**
  * Create a class that can also be used as a mixin.
@@ -18,7 +19,8 @@ module.exports.Class = function(superclass, func) {
 module.exports.toExtendable = function(type) {
     type.with = function(...mixins) {
         return mix(type, ...mixins);
-    };
+	};
+	return type;
 };
 
 function mix(base, ...mixins) {

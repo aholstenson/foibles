@@ -24,11 +24,22 @@ function deduplication(mixin) {
 	});
 }
 
+function hasInstance(mixin) {
+	if(Symbol.hasInstance && ! mixin.hasOwnProperty(Symbol.hasInstance)) {
+		Object.defineProperty(mixin, Symbol.hasInstance, {
+			value: function mixinHasInstance(other) {
+				return has(other, mixin);
+			}
+		});
+	}
+	return mixin;
+}
+
 /**
  * Decorate the given function so that it behaves nicely as a mixin.
  */
 function mixin(func) {
-	return deduplication(root(func));
+	return deduplication(root(hasInstance(func)));
 }
 
-module.exports.mixin = mixin;
+module.exports.Mixin = mixin;

@@ -32,6 +32,11 @@ function hasInstance(mixin) {
 			}
 		});
 	}
+
+	// As an alternative to instanceof bind a custom function
+	mixin.isInstance = function(other) {
+		return has(other, mixin);
+	};
 	return mixin;
 }
 

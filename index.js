@@ -28,8 +28,17 @@ function mix(base, ...mixins) {
 	let chain = root.name;
 	for(let i=0; i<mixins.length; i++) {
 		let mixin = mixins[i];
+
+		if(! mixin) {
+			throw new Error('Trying to apply non-existent mixin');
+		}
+
 		if(mixin[AsMixin]) {
 			mixin = mixin[AsMixin];
+		}
+
+		if(! mixin) {
+			throw new Error('Mixin implementation bug, resolved to non-existent mixin');
 		}
 
 		root = performMixin(root, mixin);

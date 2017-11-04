@@ -135,7 +135,7 @@ describe('Basic tests', () => {
 		expect(instance.a()).to.equal(2);
 	});
 
-	it('Mixable Class can be extended', () => {
+	it('Mixable Class can be extended with mixin', () => {
 		const A = toExtendable(class {
 			a() {
 				return 1;
@@ -155,6 +155,54 @@ describe('Basic tests', () => {
 		});
 
 		const D = B.with(C);
+		const instance = new D();
+		expect(instance.a()).to.equal(2);
+		expect(instance.b()).to.equal(1);
+	});
+
+	it('Mixable Class can be extended', () => {
+		const A = toExtendable(class {
+			a() {
+				return 1;
+			}
+		});
+
+		const C = Class(A, Base => class C extends Base {
+			b() {
+				return 1;
+			}
+		});
+
+		class D extends C {
+		}
+
+		const instance = new D();
+		expect(instance.a()).to.equal(1);
+		expect(instance.b()).to.equal(1);
+	});
+
+	it('Mixable Class can be extended when mixed', () => {
+		const A = toExtendable(class {
+			a() {
+				return 1;
+			}
+		});
+
+		const B = Mixin(Base => class B extends Base {
+			a() {
+				return 1 + super.a();
+			}
+		});
+
+		const C = Class(A, Base => class C extends Base {
+			b() {
+				return 1;
+			}
+		});
+
+		class D extends C.with(B) {
+		}
+
 		const instance = new D();
 		expect(instance.a()).to.equal(2);
 		expect(instance.b()).to.equal(1);

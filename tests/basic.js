@@ -50,6 +50,56 @@ describe('Basic tests', () => {
 		expect(instance.a()).to.equal(2);
 	});
 
+	it('Mixin can mixin something else', () => {
+		const A = toExtendable(class {
+			a() {
+				return 1;
+			}
+		});
+
+		const B = Mixin(Base => class B extends Base {
+			a() {
+				return 1 + super.a();
+			}
+		});
+
+		const C = Mixin(Base => class C extends Base.with(B) {
+			b() {
+				return 1;
+			}
+		});
+
+		const D = A.with(C);
+		const instance = new D();
+		expect(instance.a()).to.equal(2);
+		expect(instance.b()).to.equal(1);
+	});
+
+	it('Same mixin can be used several times', () => {
+		const A = toExtendable(class {
+			a() {
+				return 1;
+			}
+		});
+
+		const B = Mixin(Base => class B extends Base {
+			a() {
+				return 1 + super.a();
+			}
+		});
+
+		const C = Mixin(Base => class C extends Base.with(B) {
+			b() {
+				return 1;
+			}
+		});
+
+		const D = A.with(C, B);
+		const instance = new D();
+		expect(instance.a()).to.equal(2);
+		expect(instance.b()).to.equal(1);
+	});
+
 	it('Mixable Class can be created', () => {
 		const A = toExtendable(class {
 			a() {

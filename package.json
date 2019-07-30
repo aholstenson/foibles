@@ -1,9 +1,14 @@
 {
   "name": "foibles",
   "version": "0.2.0",
-  "description": "Composition and mixins of classes",
+  "description": "Composition and mixins and TypeScript classes",
   "license": "MIT",
   "repository": "aholstenson/foibles",
+  "keywords": [
+    "mixins",
+    "mixin",
+    "composition"
+  ],
   "scripts": {
     "test": "jest",
     "ci": "npm run coverage && npm run lint",

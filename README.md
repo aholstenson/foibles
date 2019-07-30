@@ -1,25 +1,16 @@
 # Foibles
 
+[![npm version](https://badge.fury.io/js/foibles.svg)](https://badge.fury.io/js/foibles)
+[![Build Status](https://travis-ci.org/aholstenson/foibles.svg?branch=master)](https://travis-ci.org/aholstenson/foibles)
+[![Coverage Status](https://coveralls.io/repos/aholstenson/foibles/badge.svg)](https://coveralls.io/github/aholstenson/foibles)
+[![Dependencies](https://david-dm.org/aholstenson/foibles.svg)](https://david-dm.org/aholstenson/foibles)
+
 > **foible**. A quirk, idiosyncrasy, or mannerism; unusual habit or way (usage is typically plural), that is slightly strange or silly. [Wiktionary](https://en.wiktionary.org/wiki/foible)
 
-Foibles is a library for composing JavaScript classes with support for mixins.
-The library provides utilities to supply limited mixin capabilities to a class.
+Foibles is a library for composing JavaScript and TypeScript classes using
+a mixin pattern.
 
 Foibles is available on NPM: `npm install foibles`
-
-## Creating a base class
-
-To create an extendable class call `toExtendable`:
-
-```javascript
-const { toExtendable } = require('foibles');
-
-const Extendable = toExtendable(class BaseClass {
-	doStuff() {
-		console.log('base class did stuff');
-	}
-});
-```
 
 ## Creating mixins
 
@@ -28,23 +19,63 @@ makes it so that things as `super` work as intended and that mixins can override
 functions in their parent class.
 
 ```javascript
-const { Mixins } = require('foibles');
+import { toMixin } from 'foibles';
 
-const SomeMixin = Mixin(parentclass => class MixinClass extends parentclass {
+const SomeMixin = toMixin(base => class MixinClass extends base {
 	doMixinStuff() {
 		console.log('mixin did stuff');
 	}
 });
 ```
 
+For TypeScript you should also define the type, to enable you to build 
+functions that consume any object with the mixin:
+
+```typescript
+import { Mixin } from 'foibles';
+
+type SomeMixin = Mixin<typeof SomeMixin>;
+```
+
+If you want to extend a specific class you can use `typeof BaseClass` to do so:
+
+```typescript
+const SomeMixin = toMixin((base: typeof BaseClass) => class extends base {
+  ...
+})
+```
+
+## Creating a base class
+
+To create an extendable class call `toExtendable`:
+
+```javascript
+import { toExtendable } from 'foibles';
+
+const BaseType = toExtendable(class BaseClass {
+	doStuff() {
+		console.log('base class did stuff');
+	}
+});
+```
+
+For TypeScript you should also define the type, to enable you to build 
+functions that consume the base type:
+
+```typescript
+import { Extendable } from 'foibles';
+
+type BaseType = Extendable<typeof BaseType>;
+```
+
 ## Using mixins
 
-`Extendable` will be enhanced with a static `with` function that provides
-the mixin functionality. To sub class `Extendable` and at the same time
+`BaseType` will be enhanced with a static `with` function that provides
+the mixin functionality. To sub class `BaseType` and at the same time
 use `SomeMixin`:
 
 ```javascript
-class SubClass extends Extendable.with(SomeMixin) {
+class SubClass extends BaseType.with(SomeMixin) {
 
 	doStuff() {
 		// Allow super class to do stuff
@@ -64,24 +95,23 @@ console.log(object instanceof SubClass);
 ```
 
 Note: It's possible to use `instanceof` only if `Symbol.hasInstance` is supported.
-For Node you should run Node 6.11 or later. Browser compatibility has not been tested.
+Check compatibility at [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/hasInstance)
 
-## Advanced: Creating mixins that are also classes
+## Create a mixin depending on other mixins
 
-In some cases its useful to provide the same functionality both as a mixin
-and a class that can be directly extended. In those cases `Class` can be
-used:
+This library supports a mixin to depend on other mixins by applying them as
+needed in the mixin function:
 
 ```javascript
-class { Class } = require('foibles');
-
-// Create a class by extending Extendable
-const MixinAndClass = Class(Extendable, parentclass => class MixinAndClass extends parentclass {
-	doStuff() {
-		super.doStuff();
-	}
+// Define the first mixin
+const Debug = toMixin(base => class Debug extends base {
+  debug(...args) {
+    console.log(...args);
+  }
 });
 
-// Possible to create the class directly:
-new MixinAndClass();
+// Create a mixin that applies the Debug mixin to base
+const Mixin = toMixin(base => class Mixin extends Debug(base) {
+  ...
+});
 ```

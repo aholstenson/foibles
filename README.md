@@ -22,9 +22,9 @@ functions in their parent class.
 import { toMixin } from 'foibles';
 
 const SomeMixin = toMixin(base => class MixinClass extends base {
-	doMixinStuff() {
-		console.log('mixin did stuff');
-	}
+  doMixinStuff() {
+    console.log('mixin did stuff');
+  }
 });
 ```
 
@@ -53,9 +53,9 @@ To create an extendable class call `toExtendable`:
 import { toExtendable } from 'foibles';
 
 const BaseType = toExtendable(class BaseClass {
-	doStuff() {
-		console.log('base class did stuff');
-	}
+  doStuff() {
+    console.log('base class did stuff');
+  }
 });
 ```
 
@@ -77,13 +77,13 @@ use `SomeMixin`:
 ```javascript
 class SubClass extends BaseType.with(SomeMixin) {
 
-	doStuff() {
-		// Allow super class to do stuff
-		super.doStuff();
+  doStuff() {
+    // Allow super class to do stuff
+    super.doStuff();
 
-		// doMixinStuff was provided via SomeMixin
-		this.doMixinStuff();
-	}
+    // doMixinStuff was provided via SomeMixin
+    this.doMixinStuff();
+  }
 }
 ```
 

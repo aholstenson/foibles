@@ -1,6 +1,6 @@
 {
   "name": "foibles",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Composition and mixins and TypeScript classes",
   "license": "MIT",
   "repository": "aholstenson/foibles",

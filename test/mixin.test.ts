@@ -73,7 +73,7 @@ describe('Basic tests', () => {
 		expect(instance.a()).toEqual(3);
 	});
 
-	it('Mixin can mixin something else', () => {
+	it('Mixin can mixin something else using function call', () => {
 		type A = Extendable<typeof A>;
 		const A = toExtendable(class A {
 			a() {
@@ -102,6 +102,37 @@ describe('Basic tests', () => {
 		expect(instance.a()).toEqual(2);
 		expect(instance.b()).toEqual(1);
 	});
+
+	it('Mixin can mixin something else using .with()', () => {
+		type A = Extendable<typeof A>;
+		const A = toExtendable(class A {
+			a() {
+				return 1;
+			}
+		});
+
+		type B = Mixin<typeof B>;
+		const B = toMixin(Base => class B extends Base {
+			a() {
+				return 1 + super.a();
+			}
+		});
+
+		type C = Mixin<typeof C>;
+		const C = toMixin(function(Base: typeof A) {
+			return class C extends Base.with(B) {
+				b() {
+					return 1;
+				}
+			};
+		});
+
+		const D = A.with(C);
+		const instance = new D();
+		expect(instance.a()).toEqual(2);
+		expect(instance.b()).toEqual(1);
+	});
+
 
 	it('Same mixin can be used several times', () => {
 		type A = Extendable<typeof A>;

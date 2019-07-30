@@ -97,7 +97,7 @@ console.log(object instanceof SubClass);
 Note: It's possible to use `instanceof` only if `Symbol.hasInstance` is supported.
 Check compatibility at [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/hasInstance)
 
-## Create a mixin depending on other mixins
+## Creating a mixin depending on other mixins
 
 This library supports a mixin to depend on other mixins by applying them as
 needed in the mixin function:
@@ -111,7 +111,7 @@ const Debug = toMixin(base => class Debug extends base {
 });
 
 // Create a mixin that applies the Debug mixin to base
-const Mixin = toMixin(base => class Mixin extends Debug(base) {
+const Mixin = toMixin(base => class Mixin extends base.with(Debug) {
   ...
 });
 ```

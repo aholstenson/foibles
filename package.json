@@ -22,7 +22,7 @@
   "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
   "devDependencies": {
-    "@types/jest": "^24.0.15",
+    "@types/jest": "^25.2.1",
     "@types/node": "^8.0.0",
     "coveralls": "^3.0.5",
     "jest": "^24.8.0",
